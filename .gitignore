@@ -1,0 +1,20 @@
+# Dependències i resultats de Rust
+/target/
+
+# Artifacts de compilació (WASM i Abis)
+/output/*
+
+# Fitxers de test (si no vols incloure'ls)
+/vm/
+
+# Fitxers de configuració d'usuari (IMPORTANT!)
+*.json
+*.pem
+*.key
+
+# Logs i fitxers temporals
+*.log
+
+# Dependències de l'IDE (si n'utilitzes)
+.idea
+.vscode
