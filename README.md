@@ -14,6 +14,9 @@ Al fitxer client-recmark.sh he creat el següent menú per executar els endpoint
 
 Les validacions d'introducció de dades com el valor correcte del DNI, valor correcte CodiCicle i valor numèric de nota correcte les he fet al client-recmark.sh ja que dintre del SC moltes operacions amb strings estan restringides pel seu cost computacional i els bucles augmenten també el cost computacional i per conseqüència també el GAS.
 
+UPDATE
+A client-recmark.sh he fet modificacions per guardar i buscar DNIs anonimitzats.
+
  
 
  
