@@ -72,6 +72,7 @@ hex_to_string() {
 getMarks() {
     local mode=$1 # Capturem el paràmetre de mode (0 o 1)
     local all_records_text=""
+    final_dni=""
     
     echo "Consultant registres de notes des del contracte..."
 
@@ -132,7 +133,12 @@ getMarks() {
         # ---------------------------------------------
         
         read -p "Introdueix el DNI a buscar (sense guions, amb lletra): " search_dni
-        
+          # Anonimitzo el DNI transformant els 4 primers dígits a ****
+		  final_dni="${search_dni:4}"
+    
+		  # 2. Afegir els asteriscs al principi
+		  search_dni="****${final_dni}"
+		  		  
         while true; do
           echo "===== Selecciona el codi del cicle de l'alumne que s'ha graduat ====="
 		  echo "1) SMX123"
@@ -340,9 +346,13 @@ setMarkStudent() {
   local dni=""
   local codicicle=""
   local opcio=""
+  local final_dni=""
+  local dni_anonim=""
   
   read -p "Introdueix el DNI de l'alumne que s'ha graduat (amb lletra majúscula i sense guions, ex: 47624357A ): " dni
   errordni=$(validate_dni "$dni")
+  
+  
   
   while true; do
     echo ""
@@ -400,7 +410,13 @@ setMarkStudent() {
     esac
   done
   
-  getCheckRecord "$dni" "$codicicle"
+  # Anonimitzo el DNI transformant els 4 primers dígits a ****
+  final_dni="${dni:4}"
+    
+  # 2. Afegir els asteriscs al principi
+  dni_anonim="****${final_dni}"
+    
+  getCheckRecord "$dni_anonim" "$codicicle"
   
   # Captura el codi de sortida (exit code)
   # $? conté el valor retornat per l'última funció/comanda executada.
@@ -432,9 +448,9 @@ setMarkStudent() {
 		esac
 	 done
   
-     if [ "$errordni" = "N" ]; then
-       echo "Executo contracte amb parametres $dni $codicicle $nota"
-       mxpy contract call $CONTRACT --pem $PEM --gas-limit=5000000 --value 0 --function setMarkStudent --arguments "str:$dni" "str:$codicicle" "str:$nota"  --proxy $PROXY --chain D --send
+     if [ "$errordni" = "N" ]; then            
+       echo "Executo contracte amb parametres $dni_anonim $codicicle $nota"
+       mxpy contract call $CONTRACT --pem $PEM --gas-limit=5000000 --value 0 --function setMarkStudent --arguments "str:$dni_anonim" "str:$codicicle" "str:$nota"  --proxy $PROXY --chain D --send
      else
 	   echo "DNI incorrecte, no es dona d'alta aquest registre: $dni "
      fi
